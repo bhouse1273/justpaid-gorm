@@ -3,9 +3,10 @@ package main
 import (
 	"log"
 	"time"
+
+	"github.com/bhouse1273/justpaid-gorm/internal/config"
+	"github.com/bhouse1273/justpaid-gorm/internal/db"
 	"github.com/joho/godotenv"
-	"example.com/justpaid/internal/config"
-	"example.com/justpaid/internal/db"
 )
 
 func main() {
@@ -23,7 +24,9 @@ func main() {
 		type row struct{ CampaignActionID string }
 		var claimed []row
 		dbconn.Raw("CALL sp_campaign_claim_due_actions(?)", cfg.WorkerBatch).Scan(&claimed)
-		if len(claimed) == 0 { continue }
+		if len(claimed) == 0 {
+			continue
+		}
 		log.Printf("claimed %d actions", len(claimed))
 		for _, r := range claimed {
 			// TODO: perform the actual action (email/letter/dialer) using Result JSON
