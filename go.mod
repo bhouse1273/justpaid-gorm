@@ -3,15 +3,20 @@ module github.com/bhouse1273/justpaid-gorm
 go 1.24.2
 
 require (
+	github.com/golang-jwt/jwt/v5 v5.3.0
+	github.com/joho/godotenv v1.5.1
+	github.com/labstack/echo-jwt/v4 v4.3.1
 	github.com/labstack/echo/v4 v4.13.4
 	github.com/shopspring/decimal v1.4.0
-	gorm.io/datatypes v1.2.0
-	gorm.io/driver/mysql v1.5.7
-	gorm.io/gorm v1.25.9
+	gorm.io/datatypes v1.2.6
+	gorm.io/driver/mysql v1.6.0
+	gorm.io/gorm v1.30.1
 )
 
 require (
-	github.com/go-sql-driver/mysql v1.7.0 // indirect
+	filippo.io/edwards25519 v1.1.0 // indirect
+	github.com/go-sql-driver/mysql v1.8.1 // indirect
+	github.com/google/uuid v1.6.0 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/labstack/gommon v0.4.2 // indirect
@@ -23,4 +28,5 @@ require (
 	golang.org/x/net v0.40.0 // indirect
 	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/text v0.25.0 // indirect
+	golang.org/x/time v0.11.0 // indirect
 )

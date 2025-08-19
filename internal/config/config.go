@@ -8,17 +8,19 @@ import (
 )
 
 type Config struct {
-	Port            string
-	MySQLDSN        string
-	JWTSecret       string
-	CORSOrigins     []string
-	WorkerEnabled   bool
-	WorkerBatch     int
-	WorkerTickSec   int
+	Port          string
+	MySQLDSN      string
+	JWTSecret     string
+	CORSOrigins   []string
+	WorkerEnabled bool
+	WorkerBatch   int
+	WorkerTickSec int
 }
 
 func getenv(k, def string) string {
-	if v := os.Getenv(k); v != "" { return v }
+	if v := os.Getenv(k); v != "" {
+		return v
+	}
 	return def
 }
 

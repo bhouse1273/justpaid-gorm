@@ -11,6 +11,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/joho/godotenv"
+	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -46,11 +47,7 @@ func main() {
 	api := e.Group("/api")
 	// Optional JWT auth
 	if secret := cfg.JWTSecret; strings.TrimSpace(secret) != "" {
-		api.Use(middleware.JWTWithConfig(middleware.JWTConfig{
-			SigningKey:  []byte(secret),
-			Claims:      &jwt.RegisteredClaims{},
-			TokenLookup: "header:Authorization,cookie:access_token,query:access_token",
-		}))
+		registerAPI(api, secret)
 	}
 
 	api.POST("/campaigns/:id/materialize", h.MaterializeCampaign)
@@ -61,4 +58,14 @@ func main() {
 	if err := e.Start(":" + cfg.Port); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func registerAPI(g *echo.Group, secret string) {
+	g.Use(echojwt.WithConfig(echojwt.Config{
+		SigningKey: []byte(secret),
+		// Use NewClaimsFunc (not Claims) with jwt/v5:
+		NewClaimsFunc: func(c echo.Context) jwt.Claims { return new(jwt.RegisteredClaims) },
+		// You can look up tokens in multiple places (comma-separated):
+		TokenLookup: "header:Authorization,cookie:access_token,query:access_token",
+	}))
 }
