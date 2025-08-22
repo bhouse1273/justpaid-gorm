@@ -5,6 +5,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"go.uber.org/zap"
 )
 
 type Config struct {
@@ -16,6 +18,11 @@ type Config struct {
 	WorkerBatch   int
 	WorkerTickSec int
 }
+
+var (
+	JPLogger *zap.Logger
+	JPConfig *Config
+)
 
 func getenv(k, def string) string {
 	if v := os.Getenv(k); v != "" {
@@ -47,5 +54,8 @@ func New() *Config {
 	if cfg.MySQLDSN == "" {
 		log.Println("WARNING: MYSQL_DSN is empty; set it in .env")
 	}
+	// Assign global reference variable
+	JPConfig = cfg
+
 	return cfg
 }

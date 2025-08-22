@@ -1,0 +1,1874 @@
+openapi: 3.0.3
+info:
+  title: JustPaid API
+  version: 1.0.0
+  description: Complete OpenAPI specification for the JustPaid GORM demo API with all models and CRUD operations
+servers:
+  - url: /api
+    description: API server
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    # Core entities
+    Organization:
+      type: object
+      properties:
+        orgId:
+          type: string
+          format: uuid
+          description: Organization ID
+        title:
+          type: string
+          maxLength: 50
+          description: Organization title
+        parentOrgId:
+          type: string
+          format: uuid
+          nullable: true
+          description: Parent organization ID
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+          format: uuid
+          nullable: true
+        cas:
+          type: integer
+          format: int32
+          nullable: true
+
+    OrganizationCreate:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          maxLength: 50
+        parentOrgId:
+          type: string
+          format: uuid
+          nullable: true
+
+    OrganizationUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 50
+        parentOrgId:
+          type: string
+          format: uuid
+          nullable: true
+
+    Property:
+      type: object
+      properties:
+        propertyId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 50
+        orgId:
+          type: string
+          format: uuid
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+          format: uuid
+          nullable: true
+        cas:
+          type: integer
+          format: int32
+          nullable: true
+
+    PropertyCreate:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          maxLength: 50
+        orgId:
+          type: string
+          format: uuid
+          nullable: true
+
+    PropertyUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 50
+        orgId:
+          type: string
+          format: uuid
+          nullable: true
+
+    Offer:
+      type: object
+      properties:
+        offerId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 50
+        orgId:
+          type: string
+          format: uuid
+        rules:
+          type: string
+          nullable: true
+          description: Medium text rules
+        status:
+          type: string
+          maxLength: 1
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+          format: uuid
+          nullable: true
+        cas:
+          type: integer
+          format: int32
+          nullable: true
+
+    OfferCreate:
+      type: object
+      required:
+        - title
+        - orgId
+      properties:
+        title:
+          type: string
+          maxLength: 50
+        orgId:
+          type: string
+          format: uuid
+        rules:
+          type: string
+          nullable: true
+
+    OfferUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 50
+        rules:
+          type: string
+          nullable: true
+        status:
+          type: string
+          maxLength: 1
+          nullable: true
+
+    Portfolio:
+      type: object
+      properties:
+        portfolioId:
+          type: string
+          format: uuid
+        orgId:
+          type: string
+          format: uuid
+          nullable: true
+        portTemplateId:
+          type: string
+          format: uuid
+          nullable: true
+        title:
+          type: string
+          maxLength: 80
+        description:
+          type: string
+          maxLength: 255
+          nullable: true
+        status:
+          type: string
+          maxLength: 1
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+          format: uuid
+          nullable: true
+        cas:
+          type: integer
+          format: int32
+          nullable: true
+
+    PortfolioCreate:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          maxLength: 80
+        orgId:
+          type: string
+          format: uuid
+          nullable: true
+        portTemplateId:
+          type: string
+          format: uuid
+          nullable: true
+        description:
+          type: string
+          maxLength: 255
+          nullable: true
+
+    PortfolioUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 80
+        portTemplateId:
+          type: string
+          format: uuid
+          nullable: true
+        description:
+          type: string
+          maxLength: 255
+          nullable: true
+        status:
+          type: string
+          maxLength: 1
+          nullable: true
+
+    PortTemplate:
+      type: object
+      properties:
+        portTemplateId:
+          type: string
+          format: uuid
+        orgId:
+          type: string
+          format: uuid
+          nullable: true
+        title:
+          type: string
+          maxLength: 80
+        description:
+          type: string
+          maxLength: 255
+          nullable: true
+        selection:
+          type: string
+          maxLength: 1024
+          nullable: true
+        status:
+          type: string
+          maxLength: 1
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+          format: uuid
+          nullable: true
+        cas:
+          type: integer
+          format: int32
+          nullable: true
+
+    PortTemplateCreate:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          maxLength: 80
+        orgId:
+          type: string
+          format: uuid
+          nullable: true
+        description:
+          type: string
+          maxLength: 255
+          nullable: true
+        selection:
+          type: string
+          maxLength: 1024
+          nullable: true
+
+    PortTemplateUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 80
+        description:
+          type: string
+          maxLength: 255
+          nullable: true
+        selection:
+          type: string
+          maxLength: 1024
+          nullable: true
+        status:
+          type: string
+          maxLength: 1
+          nullable: true
+
+    Campaign:
+      type: object
+      properties:
+        campaignId:
+          type: string
+          format: uuid
+        orgId:
+          type: string
+          format: uuid
+          nullable: true
+        portfolioId:
+          type: string
+          format: uuid
+        workflowTemplateId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 80
+        description:
+          type: string
+          maxLength: 255
+          nullable: true
+        campaignType:
+          type: string
+          maxLength: 20
+          nullable: true
+        startDate:
+          type: string
+          format: date
+          nullable: true
+        endDate:
+          type: string
+          format: date
+          nullable: true
+        status:
+          type: string
+          maxLength: 1
+          nullable: true
+        limits:
+          type: object
+          nullable: true
+          description: JSON limits configuration
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+          format: uuid
+          nullable: true
+        cas:
+          type: integer
+          format: int32
+          nullable: true
+
+    CampaignCreate:
+      type: object
+      required:
+        - portfolioId
+        - workflowTemplateId
+        - title
+      properties:
+        portfolioId:
+          type: string
+          format: uuid
+        workflowTemplateId:
+          type: string
+          format: uuid
+        title:
+          type: string
+          maxLength: 80
+        description:
+          type: string
+          maxLength: 255
+          nullable: true
+        campaignType:
+          type: string
+          maxLength: 20
+          nullable: true
+        startDate:
+          type: string
+          format: date
+          nullable: true
+        endDate:
+          type: string
+          format: date
+          nullable: true
+
+    CampaignUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+          maxLength: 80
+        description:
+          type: string
+          maxLength: 255
+          nullable: true
+        startDate:
+          type: string
+          format: date
+          nullable: true
+        endDate:
+          type: string
+          format: date
+          nullable: true
+        status:
+          type: string
+          maxLength: 1
+          nullable: true
+
+    Account:
+      type: object
+      properties:
+        accountId:
+          type: string
+          format: uuid
+        addressId:
+          type: string
+          format: uuid
+          nullable: true
+        tenantId:
+          type: string
+          format: uuid
+          nullable: true
+        unit:
+          type: string
+          maxLength: 20
+          nullable: true
+        status:
+          type: string
+          maxLength: 1
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+          format: uuid
+          nullable: true
+        cas:
+          type: integer
+          format: int32
+          nullable: true
+
+    AccountCreate:
+      type: object
+      properties:
+        addressId:
+          type: string
+          format: uuid
+          nullable: true
+        tenantId:
+          type: string
+          format: uuid
+          nullable: true
+        unit:
+          type: string
+          maxLength: 20
+          nullable: true
+
+    AccountUpdate:
+      type: object
+      properties:
+        addressId:
+          type: string
+          format: uuid
+          nullable: true
+        tenantId:
+          type: string
+          format: uuid
+          nullable: true
+        unit:
+          type: string
+          maxLength: 20
+          nullable: true
+        status:
+          type: string
+          maxLength: 1
+          nullable: true
+
+    Payment:
+      type: object
+      properties:
+        paymentId:
+          type: string
+          format: uuid
+        accountId:
+          type: string
+          format: uuid
+          nullable: true
+        paymentPlanId:
+          type: string
+          format: uuid
+          nullable: true
+        methodId:
+          type: string
+          format: uuid
+          nullable: true
+        transDate:
+          type: string
+          format: date
+          nullable: true
+        memo:
+          type: string
+          maxLength: 100
+          nullable: true
+        amount:
+          type: string
+          pattern: '^-?\d+(\.\d{1,4})?$'
+          nullable: true
+          description: Decimal amount with up to 4 decimal places
+        status:
+          type: string
+          maxLength: 1
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+          format: uuid
+          nullable: true
+        cas:
+          type: integer
+          format: int32
+          nullable: true
+
+    PaymentCreate:
+      type: object
+      properties:
+        accountId:
+          type: string
+          format: uuid
+          nullable: true
+        paymentPlanId:
+          type: string
+          format: uuid
+          nullable: true
+        methodId:
+          type: string
+          format: uuid
+          nullable: true
+        transDate:
+          type: string
+          format: date
+          nullable: true
+        memo:
+          type: string
+          maxLength: 100
+          nullable: true
+        amount:
+          type: string
+          pattern: '^-?\d+(\.\d{1,4})?$'
+          nullable: true
+
+    PaymentUpdate:
+      type: object
+      properties:
+        memo:
+          type: string
+          maxLength: 100
+          nullable: true
+        status:
+          type: string
+          maxLength: 1
+          nullable: true
+
+    User:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+          maxLength: 100
+        iAgreedToTerms:
+          type: string
+          maxLength: 1
+          nullable: true
+        status:
+          type: string
+          maxLength: 1
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+          format: uuid
+          nullable: true
+        cas:
+          type: integer
+          format: int32
+          nullable: true
+
+    UserCreate:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 100
+        iAgreedToTerms:
+          type: string
+          maxLength: 1
+          nullable: true
+
+    UserUpdate:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          maxLength: 100
+        iAgreedToTerms:
+          type: string
+          maxLength: 1
+          nullable: true
+        status:
+          type: string
+          maxLength: 1
+          nullable: true
+
+    # Additional models
+    Address:
+      type: object
+      properties:
+        addressId:
+          type: string
+          format: uuid
+        ownerId:
+          type: string
+          format: uuid
+          nullable: true
+        address1:
+          type: string
+          maxLength: 50
+          nullable: true
+        address2:
+          type: string
+          maxLength: 50
+          nullable: true
+        address3:
+          type: string
+          maxLength: 50
+          nullable: true
+        city:
+          type: string
+          maxLength: 30
+          nullable: true
+        county:
+          type: string
+          maxLength: 30
+          nullable: true
+        stateCode:
+          type: string
+          maxLength: 2
+          nullable: true
+        zipCode:
+          type: string
+          maxLength: 10
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Tenant:
+      type: object
+      properties:
+        tenantId:
+          type: string
+          format: uuid
+        propertyId:
+          type: string
+          format: uuid
+          nullable: true
+        addressId:
+          type: string
+          format: uuid
+          nullable: true
+        userId:
+          type: string
+          format: uuid
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    # Error response
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+
+  parameters:
+    idParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Resource ID
+
+paths:
+  /ping:
+    get:
+      summary: Health check ping
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+
+  /healthz:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+
+  /organizations:
+    get:
+      summary: List all organizations
+      tags:
+        - Organizations
+      responses:
+        '200':
+          description: List of organizations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create a new organization
+      tags:
+        - Organizations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationCreate'
+      responses:
+        '201':
+          description: Organization created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /organizations/{id}:
+    parameters:
+      - $ref: '#/components/parameters/idParam'
+    
+    get:
+      summary: Get organization by ID
+      tags:
+        - Organizations
+      responses:
+        '200':
+          description: Organization details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        '404':
+          description: Organization not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    put:
+      summary: Update organization
+      tags:
+        - Organizations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationUpdate'
+      responses:
+        '200':
+          description: Organization updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Organization'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Organization not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    delete:
+      summary: Delete organization
+      tags:
+        - Organizations
+      responses:
+        '204':
+          description: Organization deleted successfully
+        '404':
+          description: Organization not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /properties:
+    get:
+      summary: List all properties
+      tags:
+        - Properties
+      responses:
+        '200':
+          description: List of properties
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Property'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create a new property
+      tags:
+        - Properties
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertyCreate'
+      responses:
+        '201':
+          description: Property created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /properties/{id}:
+    parameters:
+      - $ref: '#/components/parameters/idParam'
+    
+    get:
+      summary: Get property by ID
+      tags:
+        - Properties
+      responses:
+        '200':
+          description: Property details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property'
+        '404':
+          description: Property not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    put:
+      summary: Update property
+      tags:
+        - Properties
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertyUpdate'
+      responses:
+        '200':
+          description: Property updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Property not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    delete:
+      summary: Delete property
+      tags:
+        - Properties
+      responses:
+        '204':
+          description: Property deleted successfully
+        '404':
+          description: Property not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /offers:
+    get:
+      summary: List all offers
+      tags:
+        - Offers
+      responses:
+        '200':
+          description: List of offers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Offer'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create a new offer
+      tags:
+        - Offers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OfferCreate'
+      responses:
+        '201':
+          description: Offer created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /offers/{id}:
+    parameters:
+      - $ref: '#/components/parameters/idParam'
+    
+    get:
+      summary: Get offer by ID
+      tags:
+        - Offers
+      responses:
+        '200':
+          description: Offer details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+        '404':
+          description: Offer not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    put:
+      summary: Update offer
+      tags:
+        - Offers
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OfferUpdate'
+      responses:
+        '200':
+          description: Offer updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Offer not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    delete:
+      summary: Delete offer
+      tags:
+        - Offers
+      responses:
+        '204':
+          description: Offer deleted successfully
+        '404':
+          description: Offer not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /portfolios:
+    get:
+      summary: List all portfolios
+      tags:
+        - Portfolios
+      responses:
+        '200':
+          description: List of portfolios
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Portfolio'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create a new portfolio
+      tags:
+        - Portfolios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PortfolioCreate'
+      responses:
+        '201':
+          description: Portfolio created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Portfolio'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /portfolios/{id}:
+    parameters:
+      - $ref: '#/components/parameters/idParam'
+    
+    get:
+      summary: Get portfolio by ID
+      tags:
+        - Portfolios
+      responses:
+        '200':
+          description: Portfolio details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Portfolio'
+        '404':
+          description: Portfolio not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    put:
+      summary: Update portfolio
+      tags:
+        - Portfolios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PortfolioUpdate'
+      responses:
+        '200':
+          description: Portfolio updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Portfolio'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Portfolio not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    delete:
+      summary: Delete portfolio
+      tags:
+        - Portfolios
+      responses:
+        '204':
+          description: Portfolio deleted successfully
+        '404':
+          description: Portfolio not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /port-templates:
+    get:
+      summary: List all port templates
+      description: List all port templates, optionally filtered by organization ID
+      tags:
+        - PortTemplates
+      parameters:
+        - name: orgId
+          in: query
+          description: Filter port templates by organization ID
+          required: false
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: List of port templates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PortTemplate'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create a new port template
+      tags:
+        - PortTemplates
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PortTemplateCreate'
+      responses:
+        '201':
+          description: Port template created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortTemplate'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /port-templates/{id}:
+    parameters:
+      - $ref: '#/components/parameters/idParam'
+    
+    get:
+      summary: Get port template by ID
+      tags:
+        - PortTemplates
+      responses:
+        '200':
+          description: Port template details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortTemplate'
+        '404':
+          description: Port template not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    put:
+      summary: Update port template
+      tags:
+        - PortTemplates
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PortTemplateUpdate'
+      responses:
+        '200':
+          description: Port template updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortTemplate'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Port template not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    delete:
+      summary: Delete port template
+      tags:
+        - PortTemplates
+      responses:
+        '204':
+          description: Port template deleted successfully
+        '404':
+          description: Port template not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /campaigns:
+    get:
+      summary: List all campaigns
+      tags:
+        - Campaigns
+      responses:
+        '200':
+          description: List of campaigns
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Campaign'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create a new campaign
+      tags:
+        - Campaigns
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignCreate'
+      responses:
+        '201':
+          description: Campaign created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /campaigns/{id}:
+    parameters:
+      - $ref: '#/components/parameters/idParam'
+    
+    get:
+      summary: Get campaign by ID
+      tags:
+        - Campaigns
+      responses:
+        '200':
+          description: Campaign details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+        '404':
+          description: Campaign not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    put:
+      summary: Update campaign
+      tags:
+        - Campaigns
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignUpdate'
+      responses:
+        '200':
+          description: Campaign updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Campaign not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    delete:
+      summary: Delete campaign
+      tags:
+        - Campaigns
+      responses:
+        '204':
+          description: Campaign deleted successfully
+        '404':
+          description: Campaign not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /accounts:
+    get:
+      summary: List all accounts
+      tags:
+        - Accounts
+      responses:
+        '200':
+          description: List of accounts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Account'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create a new account
+      tags:
+        - Accounts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountCreate'
+      responses:
+        '201':
+          description: Account created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /accounts/{id}:
+    parameters:
+      - $ref: '#/components/parameters/idParam'
+    
+    get:
+      summary: Get account by ID
+      tags:
+        - Accounts
+      responses:
+        '200':
+          description: Account details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '404':
+          description: Account not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    put:
+      summary: Update account
+      tags:
+        - Accounts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountUpdate'
+      responses:
+        '200':
+          description: Account updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Account not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    delete:
+      summary: Delete account
+      tags:
+        - Accounts
+      responses:
+        '204':
+          description: Account deleted successfully
+        '404':
+          description: Account not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /payments:
+    get:
+      summary: List all payments
+      tags:
+        - Payments
+      responses:
+        '200':
+          description: List of payments
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create a new payment
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentCreate'
+      responses:
+        '201':
+          description: Payment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /payments/{id}:
+    parameters:
+      - $ref: '#/components/parameters/idParam'
+    
+    get:
+      summary: Get payment by ID
+      tags:
+        - Payments
+      responses:
+        '200':
+          description: Payment details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '404':
+          description: Payment not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    put:
+      summary: Update payment
+      tags:
+        - Payments
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentUpdate'
+      responses:
+        '200':
+          description: Payment updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Payment not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    delete:
+      summary: Delete payment
+      tags:
+        - Payments
+      responses:
+        '204':
+          description: Payment deleted successfully
+        '404':
+          description: Payment not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users:
+    get:
+      summary: List all users
+      tags:
+        - Users
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    post:
+      summary: Create a new user
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreate'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /users/{id}:
+    parameters:
+      - $ref: '#/components/parameters/idParam'
+    
+    get:
+      summary: Get user by ID
+      tags:
+        - Users
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    put:
+      summary: Update user
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdate'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: User not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    delete:
+      summary: Delete user
+      tags:
+        - Users
+      responses:
+        '204':
+          description: User deleted successfully
+        '404':
+          description: User not found
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+security:
+  - bearerAuth: []
